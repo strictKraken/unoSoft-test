@@ -1,21 +1,28 @@
 <script setup lang="ts">
+import type { UserVK } from "@/stores/friends";
+
 defineProps<{
-  list: any[];
+  list: UserVK[];
 }>();
 
 const emit = defineEmits<{
-  (e: "deleteItem", user: any): void;
+  (e: "deleteItem", user: UserVK): void;
+  (e: "clickItem", user: UserVK): void;
 }>();
 
-const handleDeleteItem = (item: any) => {
+const handleDeleteItem = (item: UserVK) => {
   emit("deleteItem", item);
+};
+
+const handleClickItem = (item: UserVK) => {
+  emit("clickItem", item);
 };
 </script>
 
 <template>
   <a-list class="list" item-layout="horizontal" :data-source="list">
     <template #renderItem="{ item }">
-      <a-list-item>
+      <a-list-item @click="() => handleClickItem(item)" class="list__item">
         <template #actions>
           <a-button @click="handleDeleteItem(item)" type="text" danger>delete</a-button>
         </template>
@@ -30,11 +37,15 @@ const handleDeleteItem = (item: any) => {
   </a-list>
 </template>
 
-<style>
+<style scoped>
 .list {
 }
-
+.list__item {
+  cursor: pointer;
+}
+.list__item:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+}
 .list__delete-item {
-  color: red;
 }
 </style>

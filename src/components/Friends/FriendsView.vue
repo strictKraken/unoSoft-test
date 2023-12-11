@@ -7,11 +7,18 @@ const usersStore = useFriendsStore();
 const handleDeleteUser = (user: any) => {
   usersStore.delete(user);
 };
+
+const handleTransformData = () => {
+  usersStore.transformList();
+};
 </script>
 <template html>
   <div class="wrapper">
-    <a-button type="primary">Transform</a-button>
+    <a-button type="primary" @click="handleTransformData">Transform</a-button>
     <FriendsList :list="usersStore.friends" @delete-item="handleDeleteUser" />
+    <div v-if="usersStore.friendsTransformed.length > 0">
+      <FriendsList :list="usersStore.friendsTransformed" />
+    </div>
   </div>
 </template>
 
