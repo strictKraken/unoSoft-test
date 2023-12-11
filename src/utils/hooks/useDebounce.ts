@@ -1,4 +1,4 @@
-type F = (...args: number[]) => void;
+type F = (...args: any[]) => void;
 export const useDebounce = (fn: F, t: number): F => {
   let timer: number;
   return (...args) => {
