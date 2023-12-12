@@ -13,6 +13,7 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@vkid/sdk": "^1.0.1",
     "ant-design-vue": "^4.0.7",
     "pinia": "^2.1.7",
     "vue": "^3.3.10",

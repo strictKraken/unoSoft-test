@@ -2,19 +2,21 @@
 import { ref } from "vue";
 import { useDebounce } from "@/utils/hooks";
 import { searchUsers } from "@/api/vk/fetch";
-import { useFriendsStore } from "@/stores/friends";
+import { useFriendsStore, type UserVK } from "@/stores/friends";
 import AddUser from "../icons/AddUser.vue";
+import { useSessionStore } from "@/stores/session";
 
 const friendsStore = useFriendsStore();
+const sessionStore = useSessionStore();
 
 const value = ref("");
-const options = ref<any[]>([]);
+const options = ref<UserVK[]>([]);
 
 const debounceTimeMS = 500;
 
 const search = useDebounce(async (searchText: string) => {
   if (searchText) {
-    const response = await searchUsers(searchText);
+    const response = await searchUsers({ q: searchText });
     options.value = response;
   } else {
     options.value = [];
@@ -33,6 +35,7 @@ const onClickAdd = (item: any) => {
 <template>
   <div class="wrapper">
     <a-auto-complete
+      :disabled="!sessionStore.userSession"
       v-model:value="value"
       :options="options"
       class="auto-complete"
@@ -42,17 +45,18 @@ const onClickAdd = (item: any) => {
     >
       <template #option="item">
         <div class="auto-complete__item">
-          <span>
-            {{ item.name }}
-          </span>
+          <a-avatar :src="item.photo_50" />
+
+          <span> {{ item.first_name }} {{ item.last_name }} </span>
 
           <a-button
             v-if="!friendsStore.search(item)"
             class="auto-complete__button-add"
             @click.stop.prevent="() => onClickAdd(item)"
             shape="circle"
-            ><AddUser
-          /></a-button>
+          >
+            <AddUser />
+          </a-button>
           <div v-else class="auto-complete__button-add">added</div>
         </div>
       </template>
@@ -71,6 +75,7 @@ const onClickAdd = (item: any) => {
 .auto-complete__item {
   display: flex;
   align-items: center;
+  gap: 20px;
 }
 .auto-complete__button-add {
   margin-left: auto;

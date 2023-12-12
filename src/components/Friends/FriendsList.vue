@@ -27,9 +27,9 @@ const handleClickItem = (item: UserVK) => {
           <a-button @click="handleDeleteItem(item)" type="text" danger>delete</a-button>
         </template>
         <a-list-item-meta>
-          <template #title> {{ item.name }} {{ item.lastName }} </template>
+          <template #title> {{ item.first_name }} {{ item.last_name }} </template>
           <template #avatar>
-            <a-avatar :src="item.image" />
+            <a-avatar :src="item.photo_50" />
           </template>
         </a-list-item-meta>
       </a-list-item>

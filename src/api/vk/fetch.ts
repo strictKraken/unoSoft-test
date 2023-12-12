@@ -1,5 +1,19 @@
-import mock from "./mock.json";
+import type { UserVK } from "@/stores/friends";
 
-export const searchUsers = async (q?: string): Promise<any[]> => {
-  return await mock.users;
-};
+export const searchUsers = async (body: { q: string }): Promise<UserVK[]> =>
+  new Promise((res) => {
+    let users: UserVK[] = [];
+
+    VK.Api.call(
+      "users.search",
+      { q: body.q, fields: "photo_50", v: import.meta.env.VITE_VK_API_VERSION },
+      function (r) {
+        if (r.response) {
+          users = r.response.items;
+          res(users);
+        }
+      }
+    );
+
+    return users;
+  });
