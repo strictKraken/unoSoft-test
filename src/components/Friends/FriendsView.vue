@@ -45,7 +45,7 @@ const handleChangeTab = (tab: string) => {
             <FriendItem
               v-for="user in usersStore.friendsTransformed"
               :key="user.id"
-              :user="(user as any)"
+              :user="user as any"
               @on-click="handleClickItem"
             />
           </a-flex>
