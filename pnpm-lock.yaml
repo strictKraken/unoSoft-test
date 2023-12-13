@@ -8,9 +8,6 @@ dependencies:
   '@ant-design/icons-vue':
     specifier: ^7.0.1
     version: 7.0.1(vue@3.3.11)
-  '@vkid/sdk':
-    specifier: ^1.0.1
-    version: 1.0.1
   ant-design-vue:
     specifier: ^4.0.7
     version: 4.0.7(vue@3.3.11)
@@ -729,17 +726,6 @@ packages:
       vue: 3.3.11(typescript@5.2.2)
     dev: true
 
-  /@vkid/sdk@1.0.1:
-    resolution: {integrity: sha512-0/wBVvyhFExqT1H5ZO1547LFT/qDq776sIgi1WF+pANiNr1S2f+MWX5LXr6FennBWHWgUy9EgSM7UWsZqofrkQ==}
-    dependencies:
-      '@vkontakte/vkjs': 0.20.0
-      crypto-js: 4.2.0
-    dev: false
-
-  /@vkontakte/vkjs@0.20.0:
-    resolution: {integrity: sha512-bocEj9pcr6i6F0LN288xU3PX1MI4OJ3ZJXTa6kFx9IqEgk0CnoMtLAcuH2D7DzZAnc83DJCa/tuo9mT7XW035A==}
-    dev: false
-
   /@volar/language-core@1.11.1:
     resolution: {integrity: sha512-dOcNn3i9GgZAcJt43wuaEykSluAuOkQgzni1cuxLxTV0nJKanQztp7FxyswdRILaKH+P2XZMPRp2S4MV/pElCw==}
     dependencies:
@@ -1105,10 +1091,6 @@ packages:
       shebang-command: 2.0.0
       which: 2.0.2
     dev: true
-
-  /crypto-js@4.2.0:
-    resolution: {integrity: sha512-KALDyEYgpY+Rlob/iriUtjV6d5Eq+Y191A5g4UqLAi8CyGP9N1+FdVbkc1SxKc2r4YAYqG8JzO2KGL+AizD70Q==}
-    dev: false
 
   /cssesc@3.0.0:
     resolution: {integrity: sha512-/Tb/JcjK111nNScGob5MNtsntNM1aCNUDipB/TkwZFhyDrrE47SOx/18wF2bbjgc3ZzCSKW1T5nt5EbFoAz/Vg==}
