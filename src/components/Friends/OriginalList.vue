@@ -38,5 +38,4 @@ const handleClickItem = (item: UserVK) => {
   </a-list>
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>

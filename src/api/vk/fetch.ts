@@ -21,22 +21,6 @@ type UserStatus = {
   user_id: number;
 };
 
-export const areFriends = async (user_id: string, user_ids: string): Promise<UserStatus[] | []> =>
-  new Promise((res, rej) => {
-    // const params = {
-    //   user_id,
-    //   user_ids,
-    // };
-
-    VK.Api.call("friends.areFriends", (r: any) => {
-      if (r.response) {
-        res(r.response);
-      } else {
-        rej([]);
-      }
-    });
-  });
-
 export const getFriends = (user_id: number): Promise<{ count: number; items: number[] } | null> =>
   new Promise((res, rej) => {
     const params = {
