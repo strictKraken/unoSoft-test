@@ -23,7 +23,7 @@ const emit = defineEmits<{
 
 const friendsStore = useFriendsStore();
 
-const sex = computed((user: UserProp) => {
+const sex = computed(() => {
   if (props.user.sex === 0) return "not specified";
   return props.user.sex === 1 ? "female" : "male";
 });
@@ -33,15 +33,18 @@ const age = computed(() => {
 
 const colorFriendsCount = computed(() => {
   let count = 0;
-  friendsStore.friends.forEach((element) => {
-    if (element.friend_list?.includes(props.user.id)) {
+  
+  for (let i = 0; i < friendsStore.friends.length; i++) {
+    if (friendsStore.friends[i].friend_list?.includes(props.user.id)) {
       count++;
+      // console.log("loop", count)
+    } else {
+      console.log('wtf', friendsStore.friends[i].friend_list);
+      console.log('wtf2', props.user.id);
+
     }
-  });
-  if (count > friendsStore.maxFriendsCount) {
-    friendsStore.updateMaxFriendsCount(count);
   }
-  return count / friendsStore.maxFriendsCount;
+  return (count * 100) / (friendsStore.friends.length - 1 )/ 100;
 });
 
 const handleClick = (user: any) => {

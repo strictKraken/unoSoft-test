@@ -34,7 +34,6 @@ const renderPost = () => {
 
 const handleChangePage = async (page: number, pageSize: number) => {
   const res: any = await getWall(Number(route.params.id as string), { count: 5, offset: (page - 1) * pageSize });
-  // posts.value = [];
   posts.value = res.items;
 
   renderPost();
@@ -51,28 +50,24 @@ const handleChangePage = async (page: number, pageSize: number) => {
       </a-col>
       <a-col :span="16"
         ><h3>POSTS</h3>
-        <!-- <div class="wrapper-pagination"> -->
-          <a-pagination
-            class="pagination"
-            v-model="currentPage"
-            :page-size="5"
-            :total="totalPages"
-            @change="handleChangePage"
-          />
-        <!-- </div> -->
+        <a-pagination
+          class="pagination"
+          v-model="currentPage"
+          :page-size="5"
+          :total="totalPages"
+          @change="handleChangePage"
+        />
 
         <div v-if="posts.length">
           <div v-for="p in posts" :key="p.id" :id="`vk_post_${p.owner_id}_${p.id}`"></div>
         </div>
+        <div v-else>No posts</div>
       </a-col>
     </a-row>
   </main>
 </template>
 
 <style scoped>
-/* .wrapper-pagination {
-  background-color: #fff;
-} */
 .pagination {
   background-color: #fff;
   position: sticky;
