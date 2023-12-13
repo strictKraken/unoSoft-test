@@ -10,8 +10,9 @@ type User = {
   nickname?: string;
 };
 
-type UserSession = {
+export type UserSession = {
   user: User;
+  sid: string;
 };
 
 export const useSessionStore = defineStore("session", {
@@ -31,9 +32,9 @@ export const useSessionStore = defineStore("session", {
       this.userSession = null;
       useFriendsStore().clearStores();
       localStorage.removeItem("userSession");
-      VK.VK.Auth.logout();
+      VK.Auth.logout();
     },
-    check(session) {
+    check(session: UserSession) {
       const cookieSession = localStorage.getItem("userSession");
       if (cookieSession) {
         const oldUserSession = JSON.parse(cookieSession);

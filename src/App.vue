@@ -10,7 +10,7 @@ onBeforeMount(async () => {
     apiId: import.meta.env.VITE_APP_ID
   });
 
-  await VK.Auth.getLoginStatus((response) => {
+  await VK.Auth.getLoginStatus((response: { status: string, session: any }) => {
     if (response.status === "connected") {
       useSessionStore().check(response.session);
     } else {

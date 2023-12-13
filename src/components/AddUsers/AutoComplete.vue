@@ -27,7 +27,7 @@ const onSearch = (searchText: string) => {
   search(searchText);
 };
 
-const onClickAdd = (item: any) => {
+const onClickAdd = (item: UserVK) => {
   friendsStore.add(item);
 };
 </script>

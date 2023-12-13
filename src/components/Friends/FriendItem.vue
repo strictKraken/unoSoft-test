@@ -18,7 +18,7 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
-  (e: "onClick", user: any): void;
+  (e: "onClick", user: UserProp): void;
 }>();
 
 const friendsStore = useFriendsStore();
@@ -46,7 +46,7 @@ const colorFriendsCount = computed(() => {
   return (count * 100) / (friendsStore.friends.length - 1) / 100;
 });
 
-const handleClick = (user: any) => {
+const handleClick = (user: UserProp) => {
   emit("onClick", user);
 };
 </script>

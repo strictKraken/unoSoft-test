@@ -18,7 +18,7 @@ const handleDeleteUser = (user: UserVK) => {
   usersStore.delete(user);
 };
 
-const handleClickItem = (user: UserVK) => {
+const handleClickItem = (user: any) => {
   router.push(`/user/${user.id}`);
 };
 const handleClickBuildList = () => {
@@ -45,7 +45,7 @@ const handleChangeTab = (tab: string) => {
             <FriendItem
               v-for="user in usersStore.friendsTransformed"
               :key="user.id"
-              :user="user as any"
+              :user="(user as any)"
               @on-click="handleClickItem"
             />
           </a-flex>
