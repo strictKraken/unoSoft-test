@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { useFriendsStore } from "@/stores/friends";
-const friendsStore = useFriendsStore();
 
 type UserProp = {
   id: number;
@@ -17,6 +16,13 @@ type UserProp = {
 const props = defineProps<{
   user: UserProp;
 }>();
+
+const emit = defineEmits<{
+  (e: "onClick", user: any): void;
+}>();
+
+const friendsStore = useFriendsStore();
+
 const sex = computed((user: UserProp) => {
   if (props.user.sex === 0) return "not specified";
   return props.user.sex === 1 ? "female" : "male";
@@ -32,19 +38,53 @@ const colorFriendsCount = computed(() => {
       count++;
     }
   });
-  return count;
+  if (count > friendsStore.maxFriendsCount) {
+    friendsStore.updateMaxFriendsCount(count);
+  }
+  return count / friendsStore.maxFriendsCount;
 });
-</script>
 
+const handleClick = (user: any) => {
+  emit("onClick", user);
+};
+</script>
 <template>
-  <div>
-    <div><a-avatar :src="user.photo_50" /></div>
-    <div>{{ user.first_name }} {{ user.last_name }}</div>
-    <div>age: {{ age }}</div>
-    <div>sex: {{ sex }}</div>
-    <div>friends: {{ user.count_friends }}</div>
-    <div>{{ colorFriendsCount }}</div>
-  </div>
+  <a-card
+    hoverable
+    class="card"
+    @click="() => handleClick(user)"
+    :style="`background-color: rgba(22, 119, 255, ${colorFriendsCount});`"
+  >
+    <div class="card__wrapper">
+      <div class="card__title">
+        <a-avatar :src="user.photo_50" />
+        <div>
+          <div>{{ user.first_name }}</div>
+          <div>{{ user.last_name }}</div>
+        </div>
+      </div>
+
+      <div>
+        <div><b>age:</b> {{ age }}</div>
+        <div><b>sex:</b> {{ sex }}</div>
+        <div><b>friends:</b> {{ user.count_friends }}</div>
+      </div>
+    </div>
+  </a-card>
 </template>
 
-<style scoped></style>
+<style scoped>
+.card__wrapper {
+  display: flex;
+  flex-direction: column;
+}
+.card__title {
+  display: flex;
+  gap: 1em;
+  align-items: center;
+  padding-bottom: 1em;
+}
+.card {
+  width: 200px;
+}
+</style>

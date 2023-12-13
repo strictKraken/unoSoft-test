@@ -3,6 +3,7 @@ import { ref } from "vue";
 import router from "@/router";
 
 import FriendList from "./FriendList.vue";
+import FriendItem from "./FriendItem.vue";
 import OriginalList from "./OriginalList.vue";
 import { useFriendsStore, type UserVK } from "@/stores/friends";
 import FriendsTransformButton from "./FriendsTransformButton.vue";
@@ -30,7 +31,12 @@ const handleClickBuildList = () => {
         <OriginalList :list="usersStore.friends" @delete-item="handleDeleteUser" :active-action="true" />
       </a-tab-pane>
       <a-tab-pane key="2" tab="Friend list" :disabled="usersStore.friendsTransformed.length === 0">
-        <FriendList @click-item="handleClickItem" :list="usersStore.friendsTransformed" />
+        <!-- <FriendList @click-item="handleClickItem" :list="usersStore.friendsTransformed" /> -->
+        <div>
+          <a-flex wrap="wrap" gap="small">
+            <FriendItem v-for="user in usersStore.friendsTransformed" :key="user.id" :user="(user as any)" @on-click="handleClickItem"/>
+          </a-flex>
+        </div>
       </a-tab-pane>
     </a-tabs>
   </div>

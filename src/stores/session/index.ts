@@ -1,4 +1,5 @@
 import { defineStore } from "pinia";
+import { useFriendsStore } from "../friends";
 
 type User = {
   domain: string;
@@ -26,6 +27,7 @@ export const useSessionStore = defineStore("session", {
     },
     logout() {
       this.userSession = null;
+      useFriendsStore().clearStores();
     }
   }
 });

@@ -5,7 +5,7 @@ import App from "./App.vue";
 import router from "./router";
 
 import "ant-design-vue/dist/reset.css";
-import { AutoComplete, List, Button, Avatar, Row, Col, Tabs } from "ant-design-vue";
+import { AutoComplete, List, Button, Avatar, Row, Col, Tabs, Card, Flex } from "ant-design-vue";
 
 const app = createApp(App);
 
@@ -16,6 +16,8 @@ app.use(Avatar);
 app.use(Row);
 app.use(Col);
 app.use(Tabs);
+app.use(Card);
+app.use(Flex);
 
 app.use(createPinia());
 app.use(router);
