@@ -1,18 +1,18 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, h } from "vue";
+import { UserAddOutlined, CheckOutlined } from "@ant-design/icons-vue";
 import { useDebounce } from "@/utils/hooks";
 import { searchUsers } from "@/api/vk/fetch";
 import { useFriendsStore, type UserVK } from "@/stores/friends";
-import AddUser from "../icons/AddUser.vue";
 import { useSessionStore } from "@/stores/session";
 
 const friendsStore = useFriendsStore();
 const sessionStore = useSessionStore();
 
-const value = ref("");
+const value = ref({});
 const options = ref<UserVK[]>([]);
 
-const debounceTimeMS = 500;
+const debounceSearchMS = 500;
 
 const search = useDebounce(async (searchText: string) => {
   if (searchText) {
@@ -21,7 +21,7 @@ const search = useDebounce(async (searchText: string) => {
   } else {
     options.value = [];
   }
-}, debounceTimeMS);
+}, debounceSearchMS);
 
 const onSearch = (searchText: string) => {
   search(searchText);
@@ -48,16 +48,18 @@ const onClickAdd = (item: any) => {
           <a-avatar :src="item.photo_50" />
 
           <span> {{ item.first_name }} {{ item.last_name }} </span>
-
-          <a-button
-            v-if="!friendsStore.search(item)"
-            class="auto-complete__button-add"
-            @click.stop.prevent="() => onClickAdd(item)"
-            shape="circle"
-          >
-            <AddUser />
-          </a-button>
-          <div v-else class="auto-complete__button-add">added</div>
+          <div style="margin-left: auto; display: flex; gap: 1em; align-items: center">
+            <div class="auto-complete__info-message" v-if="item.can_access_closed === false">profile is private</div>
+            <a-button
+              :disabled="item.can_access_closed === false"
+              v-if="!friendsStore.search(item)"
+              class="auto-complete__button-add"
+              @click.stop.prevent="() => onClickAdd(item)"
+              shape="circle"
+              :icon="h(UserAddOutlined)"
+            />
+            <div v-else class="auto-complete__button-add auto-complete__button_added"><CheckOutlined /></div>
+          </div>
         </div>
       </template>
     </a-auto-complete>
@@ -78,6 +80,14 @@ const onClickAdd = (item: any) => {
   gap: 20px;
 }
 .auto-complete__button-add {
-  margin-left: auto;
+}
+.auto-complete__button_added {
+  width: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.auto-complete__info-message {
+  color: red;
 }
 </style>

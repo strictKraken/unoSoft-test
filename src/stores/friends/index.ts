@@ -1,3 +1,4 @@
+import { getFriends } from "@/api/vk/fetch";
 import { defineStore } from "pinia";
 
 export type UserVK = {
@@ -8,6 +9,9 @@ export type UserVK = {
   can_access_closed: boolean;
   is_closed: boolean;
   photo_50?: string;
+  count_friends?: number;
+  friend_list?: number[],
+  sex?: number,
 };
 
 export type UserTransformed = UserVK & {};
@@ -25,8 +29,15 @@ export const useFriendsStore = defineStore("friends", {
     }
   },
   actions: {
-    add(user: UserVK) {
-      this.friends.push(user);
+    async add(user: UserVK) {
+      // fetch additional info
+      const fetch = async () => {
+        const res = await getFriends(user.id);
+        return res;
+      }
+
+      const friendsInfo = await fetch();
+      this.friends.push({...user, count_friends: friendsInfo?.count, friend_list: friendsInfo?.items});
     },
     delete(user: UserVK) {
       this.friends = this.friends.filter((item) => item.id !== user.id);

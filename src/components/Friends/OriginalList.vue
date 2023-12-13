@@ -3,6 +3,7 @@ import type { UserVK } from "@/stores/friends";
 
 defineProps<{
   list: UserVK[];
+  activeAction?: boolean;
 }>();
 
 const emit = defineEmits<{
@@ -20,10 +21,10 @@ const handleClickItem = (item: UserVK) => {
 </script>
 
 <template>
-  <a-list class="list" item-layout="horizontal" :data-source="list">
+  <a-list item-layout="horizontal" :data-source="list">
     <template #renderItem="{ item }">
-      <a-list-item @click="() => handleClickItem(item)" class="list__item">
-        <template #actions>
+      <a-list-item @click="() => handleClickItem(item)">
+        <template #actions v-if="activeAction">
           <a-button @click="handleDeleteItem(item)" type="text" danger>delete</a-button>
         </template>
         <a-list-item-meta>
@@ -38,14 +39,4 @@ const handleClickItem = (item: UserVK) => {
 </template>
 
 <style scoped>
-.list {
-}
-.list__item {
-  cursor: pointer;
-}
-.list__item:hover {
-  background-color: rgba(0, 0, 0, 0.04);
-}
-.list__delete-item {
-}
 </style>
