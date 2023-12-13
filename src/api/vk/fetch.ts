@@ -71,9 +71,10 @@ export const getUser = (user_ids: string) =>
     });
   });
 
-export const getWall = (owner_id: number) =>
+export const getWall = (owner_id: number, options?: any) =>
   new Promise((res, rej) => {
     const params = {
+      ...options,
       owner_id,
       v: import.meta.env.VITE_VK_API_VERSION
     };

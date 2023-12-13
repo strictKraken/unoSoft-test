@@ -23,11 +23,24 @@ export const useSessionStore = defineStore("session", {
   getters: {},
   actions: {
     login(session: any) {
+      console.log(session);
       this.userSession = session;
+      localStorage.setItem("userSession", JSON.stringify(session));
     },
     logout() {
       this.userSession = null;
       useFriendsStore().clearStores();
+      localStorage.removeItem("userSession");
+      VK.VK.Auth.logout();
+    },
+    check(session) {
+      const cookieSession = localStorage.getItem("userSession");
+      if (cookieSession) {
+        const oldUserSession = JSON.parse(cookieSession);
+        if (oldUserSession.sid === session.sid) {
+          this.userSession = oldUserSession;
+        }
+      }
     }
   }
 });
