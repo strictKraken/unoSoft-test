@@ -37,10 +37,7 @@ const colorFriendsCount = computed(() => {
   for (let i = 0; i < friendsStore.friends.length; i++) {
     if (friendsStore.friends[i].friend_list?.includes(props.user.id)) {
       count++;
-      // console.log("loop", count)
-    } else {
-      console.log("wtf", friendsStore.friends[i].friend_list);
-      console.log("wtf2", props.user.id);
+      // ("loop", count)
     }
   }
   return (count * 100) / (friendsStore.friends.length - 1) / 100;

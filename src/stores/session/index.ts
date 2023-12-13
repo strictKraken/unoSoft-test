@@ -24,7 +24,6 @@ export const useSessionStore = defineStore("session", {
   getters: {},
   actions: {
     login(session: any) {
-      console.log(session);
       this.userSession = session;
       localStorage.setItem("userSession", JSON.stringify(session));
     },
