@@ -12,7 +12,7 @@ const sessionStore = useSessionStore();
       {{ sessionStore.userSession.user.first_name }} {{ sessionStore.userSession.user.last_name }} <LogoutButton />
     </div>
     <div v-else class="logout-wrapper">
-      <h3>For start search user first sing in</h3>
+      <h3>Sign in to search</h3>
       <VkButton />
     </div>
   </div>
