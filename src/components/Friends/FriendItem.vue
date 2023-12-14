@@ -29,10 +29,10 @@ const sex = computed(() => {
   return props.user.sex === 1 ? "female" : "male";
 });
 const age = computed(() => {
-  if (!props.user.bdate) return "";
+  if (!props.user.bdate) return "-";
   const bdate = useVkDate().parsedDate(props.user.bdate);
 
-  if (!bdate) return "";
+  if (!bdate) return "-";
 
   const dateNow = new Date(Date.now());
   const age = dateNow.getFullYear() - bdate.getFullYear();
@@ -41,13 +41,13 @@ const age = computed(() => {
 
 const colorFriendsCount = computed(() => {
   let count = 0;
-
-  for (let i = 0; i < friendsStore.friendsTransformed.length; i++) {
-    if (friendsStore.friendsTransformed[i].friend_list?.includes(props.user.id)) {
+  for (let i = 0; i < friendsStore.friends.length; i++) {
+    if (friendsStore.friends[i].friend_list?.includes(props.user.id)) {
       count++;
     }
   }
-  return (count * 100) / (friendsStore.friendsTransformed.length - 1) / 100;
+
+  return (count * 100) / friendsStore.friends.length / 100;
 });
 
 const handleClick = (user: UserProp) => {
@@ -92,5 +92,6 @@ const handleClick = (user: UserProp) => {
 }
 .card {
   width: 200px;
+  height: 200px;
 }
 </style>

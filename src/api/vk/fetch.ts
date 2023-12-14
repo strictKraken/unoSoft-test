@@ -16,11 +16,6 @@ export const searchUsers = async (body: { q: string }): Promise<UserVK[]> =>
     return users;
   });
 
-type UserStatus = {
-  friend_status: number;
-  user_id: number;
-};
-
 export const getFriends = (user_id: number): Promise<{ count: number; items: number[] } | null> =>
   new Promise((res, rej) => {
     const params = {
@@ -42,7 +37,7 @@ export const getUser = (user_ids: string) =>
   new Promise((res, rej) => {
     const params = {
       user_ids,
-      fields: "lists",
+      fields: "bdate,photo_50,sex,counters,is_friend",
       v: import.meta.env.VITE_VK_API_VERSION
     };
     VK.Api.call("users.get", { ...params }, (r: any) => {
