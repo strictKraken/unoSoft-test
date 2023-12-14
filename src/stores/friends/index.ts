@@ -1,5 +1,6 @@
 import { getFriends } from "@/api/vk/fetch";
 import { defineStore } from "pinia";
+import { useSessionStore } from "../session";
 
 export type UserVK = {
   id: number;
@@ -18,10 +19,20 @@ export type UserTransformed = UserVK & {};
 
 export const useFriendsStore = defineStore("friends", {
   state: () => {
+    let friends: UserVK[] = [];
+    let friendsTransformed: UserVK[] = [];
+
+    if (useSessionStore().userSession) {
+      const localFriends = localStorage.getItem("friends");
+      const localFriendsTransformed = localStorage.getItem("friendsTransformed");
+
+      if (localFriends) friends = JSON.parse(localFriends) || [];
+      if (localFriendsTransformed) friendsTransformed = JSON.parse(localFriendsTransformed) || [];
+    }
+
     return {
-      friends: [] as UserVK[],
-      friendsTransformed: [] as UserVK[],
-      maxFriendsCount: 1
+      friends: friends,
+      friendsTransformed: friendsTransformed
     };
   },
   getters: {
@@ -39,9 +50,12 @@ export const useFriendsStore = defineStore("friends", {
 
       const friendsInfo = await fetch();
       this.friends.push({ ...user, count_friends: friendsInfo?.count, friend_list: friendsInfo?.items });
+
+      localStorage.setItem("friends", JSON.stringify(this.friends));
     },
     delete(user: UserVK) {
       this.friends = this.friends.filter((item) => item.id !== user.id);
+      localStorage.setItem("friends", JSON.stringify(this.friends));
     },
     transformList() {
       const arr = [...this.friends];
@@ -60,17 +74,16 @@ export const useFriendsStore = defineStore("friends", {
         if (a.first_name > b.first_name) {
           return 1;
         }
-
         return 0;
       });
-    },
-    updateMaxFriendsCount(newVal: number) {
-      this.maxFriendsCount = newVal;
+
+      localStorage.setItem("friendsTransformed", JSON.stringify(this.friendsTransformed));
     },
     clearStores() {
-      this.maxFriendsCount = 1;
       this.friends = [];
       this.friendsTransformed = [];
+      localStorage.removeItem("friends");
+      localStorage.removeItem("friendsTransformed");
     }
   }
 });
