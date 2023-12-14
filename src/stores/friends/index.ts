@@ -1,4 +1,4 @@
-import { getFriends } from "@/api/vk/fetch";
+import { getFriends, getUser } from "@/api/vk/fetch";
 import { defineStore } from "pinia";
 import { useSessionStore } from "../session";
 
@@ -32,7 +32,8 @@ export const useFriendsStore = defineStore("friends", {
 
     return {
       friends: friends,
-      friendsTransformed: friendsTransformed
+      friendsTransformed: friendsTransformed,
+      loading: false
     };
   },
   getters: {
@@ -57,8 +58,38 @@ export const useFriendsStore = defineStore("friends", {
       this.friends = this.friends.filter((item) => item.id !== user.id);
       localStorage.setItem("friends", JSON.stringify(this.friends));
     },
-    transformList() {
-      const arr = [...this.friends];
+    async transformList() {
+      const delay = (ms: number) => {
+        return new Promise((res) => setTimeout(res, ms));
+      };
+      const getAllFriends = async () => {
+        this.loading = true;
+        const allFriends: number[] = [];
+
+        this.friends.forEach((user) => {
+          user.friend_list?.forEach((user_id) => {
+            if (!allFriends.includes(user_id)) {
+              allFriends.push(user_id);
+            }
+          });
+        });
+
+        const user_ids = allFriends.join(",");
+        const resFriends = (await getUser(user_ids)) as UserVK[];
+
+        for (const u of resFriends) {
+          const r = await getFriends(u.id).catch((r) => r);
+          await delay(201);
+          if (r?.count) {
+            u.count_friends = r.count;
+          }
+        }
+        this.loading = false;
+        return resFriends;
+      };
+      const allFriends: UserVK[] = (await getAllFriends()) as UserVK[];
+
+      const arr = [...allFriends];
       this.friendsTransformed = arr.sort((a, b) => {
         if (a.last_name < b.last_name) {
           return -1;
