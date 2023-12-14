@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { useFriendsStore } from "@/stores/friends";
+import { useVkDate } from "@/utils/hooks";
 
 type UserProp = {
   id: number;
@@ -28,19 +29,25 @@ const sex = computed(() => {
   return props.user.sex === 1 ? "female" : "male";
 });
 const age = computed(() => {
-  return props.user.bdate || "";
+  if (!props.user.bdate) return "";
+  const bdate = useVkDate().parsedDate(props.user.bdate);
+
+  if (!bdate) return "";
+
+  const dateNow = new Date(Date.now());
+  const age = dateNow.getFullYear() - bdate.getFullYear();
+  return age;
 });
 
 const colorFriendsCount = computed(() => {
   let count = 0;
 
-  for (let i = 0; i < friendsStore.friends.length; i++) {
-    if (friendsStore.friends[i].friend_list?.includes(props.user.id)) {
+  for (let i = 0; i < friendsStore.friendsTransformed.length; i++) {
+    if (friendsStore.friendsTransformed[i].friend_list?.includes(props.user.id)) {
       count++;
-      // ("loop", count)
     }
   }
-  return (count * 100) / (friendsStore.friends.length - 1) / 100;
+  return (count * 100) / (friendsStore.friendsTransformed.length - 1) / 100;
 });
 
 const handleClick = (user: UserProp) => {
